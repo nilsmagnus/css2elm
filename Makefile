@@ -7,7 +7,7 @@ WATCH_ARGS=$(if $(shell which inotifywait),"-qre" "close_write" ".","*/*.elm" "-
 
 all: test css2elm
 
-test: *.go
+test: *.go *.css
 	go test *.go
 
 css2elm: *.go
@@ -26,3 +26,7 @@ watch-test: test
 		make test; \
 		sleep 1; \
 	done
+
+integration-test: css2elm sample.css
+	./css2elm -input sample.css > example/ElmFromCss.elm
+	cd example && elm make ExampleMain.elm
